@@ -8,44 +8,31 @@ import { motion } from "framer-motion";
 
 import styles from "./FlexDemo.module.css";
 
-const DemoArea: FC<
-  PropsWithChildren<{
-    flexDirection: string;
-    justifyContent: string;
-    alignItems: string;
-  }>
-> = ({ children, flexDirection, justifyContent, alignItems }) => {
+function FlexDemo() {
+  const [flexDirection, setFlexDirection] = React.useState("row");
+  const [justifyContent, setJustifyContent] = React.useState("flex-start");
+  const [alignItems, setAlignItems] = React.useState("stretch");
   const style = {
     flexDirection,
     justifyContent,
     alignItems,
   } as CSSProperties;
-
-  return (
-    <div style={style} className={styles.demoArea}>
-      {children}
-    </div>
-  );
-};
-
-function FlexDemo() {
-  const [flexDirection, setFlexDirection] = React.useState("row");
-  const [justifyContent, setJustifyContent] = React.useState("flex-start");
-  const [alignItems, setAlignItems] = React.useState("stretch");
+  const transition = { type: "spring", stiffness: 500, damping: 40 };
 
   return (
     <section className={styles.wrapper}>
-      <DemoArea
-        flexDirection={flexDirection}
-        justifyContent={justifyContent}
-        alignItems={alignItems}
-      >
+      <div style={style} className={styles.demoArea}>
         {ITEMS.map((item) => (
-          <div key={item.id} className={styles.flexItem}>
-            {item.label}
-          </div>
+          <motion.div
+            layout
+            transition={transition}
+            key={item.id}
+            className={styles.flexItem}
+          >
+            <motion.div layout="position">{item.label}</motion.div>
+          </motion.div>
         ))}
-      </DemoArea>
+      </div>
 
       <div className={styles.controls}>
         <SelectControl
