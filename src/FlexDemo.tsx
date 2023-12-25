@@ -1,7 +1,32 @@
-import React, { FC, ChangeEventHandler, PropsWithChildren } from "react";
+import React, {
+  FC,
+  ChangeEventHandler,
+  PropsWithChildren,
+  CSSProperties,
+} from "react";
 import { motion } from "framer-motion";
 
 import styles from "./FlexDemo.module.css";
+
+const DemoArea: FC<
+  PropsWithChildren<{
+    flexDirection: string;
+    justifyContent: string;
+    alignItems: string;
+  }>
+> = ({ children, flexDirection, justifyContent, alignItems }) => {
+  const style = {
+    flexDirection,
+    justifyContent,
+    alignItems,
+  } as CSSProperties;
+
+  return (
+    <div style={style} className={styles.demoArea}>
+      {children}
+    </div>
+  );
+};
 
 function FlexDemo() {
   const [flexDirection, setFlexDirection] = React.useState("row");
@@ -10,13 +35,17 @@ function FlexDemo() {
 
   return (
     <section className={styles.wrapper}>
-      <div className={styles.demoArea}>
+      <DemoArea
+        flexDirection={flexDirection}
+        justifyContent={justifyContent}
+        alignItems={alignItems}
+      >
         {ITEMS.map((item) => (
           <div key={item.id} className={styles.flexItem}>
             {item.label}
           </div>
         ))}
-      </div>
+      </DemoArea>
 
       <div className={styles.controls}>
         <SelectControl
